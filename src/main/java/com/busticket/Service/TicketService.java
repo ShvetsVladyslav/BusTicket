@@ -40,7 +40,7 @@ public class TicketService {
                 String requestBody = mapper.writeValueAsString(new Payer(fullName, routeService.getRoute(routeId).getPrice()));
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder().
-                        uri(URI.create("http://localhost:2020/payment/create"))
+                        uri(URI.create("http://localhost:8080/payment/create"))
                         .POST(HttpRequest.BodyPublishers.ofString(requestBody)).build();
                 HttpResponse<String> apiCall = client.send(request,
                         HttpResponse.BodyHandlers.ofString());
