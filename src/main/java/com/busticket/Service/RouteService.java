@@ -4,6 +4,9 @@ import com.busticket.Entity.Route;
 import com.busticket.Repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class RouteService {
     @Autowired
@@ -26,5 +29,8 @@ public class RouteService {
         else {
             return null;
         }
+    }
+    public List<Route> getAll(){
+        return routeRepository.findAll();
     }
 }

@@ -5,6 +5,8 @@ import com.busticket.Entity.Payer;
 import com.busticket.Entity.Ticket;
 import com.busticket.Repository.TicketRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.net.http.*;
 
 @Service
 public class TicketService {
+    private static final Logger logger = LoggerFactory.getLogger(TicketService.class);
     @Autowired
     private RouteService routeService;
     @Autowired
@@ -65,5 +68,28 @@ public class TicketService {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "No tickets available");
         }
         return response;
+    }
+    public String getPayState(String payId){
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder().
+                    uri(URI.create("http://localhost:8080/payment/find?id=" + payId))
+                    .GET().build();
+            HttpResponse<String> apiCall = client.send(request,
+                    HttpResponse.BodyHandlers.ofString());
+            logger.info(apiCall.toString());
+            PayCallback callback = mapper.convertValue(apiCall, PayCallback.class);
+            if (callback.getState()!=null) {
+                return callback.getState();
+            } else {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "State not found");
+            }
+        }
+        catch (InterruptedException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Какая-то хуйня"); //TODO: поправить ошибку
+        } catch (IOException e) {
+            throw new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT, "Get TIMEOUT from payment");
+        }
     }
 }
