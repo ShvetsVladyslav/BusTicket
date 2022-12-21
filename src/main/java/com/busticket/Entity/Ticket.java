@@ -20,4 +20,13 @@ public class Ticket {
         this.routeId = routeId;
         this.payId = payId;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id='" + id + '\'' +
+                ", routeId='" + routeId + '\'' +
+                ", payId='" + payId + '\'' +
+                '}';
+    }
 }

@@ -21,16 +21,21 @@ public class Route {
     private float price;
     @Field(name = "availableTicket")
     private int availableTicket;
-
+    public Route() {
+    }
+    public Route(String startPoint, String endPoint, String departureTime, float price, int availableTicket) {
+        this.startPoint = startPoint;
+        this.endPoint = endPoint;
+        this.departureTime = departureTime;
+        this.price = price;
+        this.availableTicket = availableTicket;
+    }
     @Override
     public String toString() {
-        return "Route{" +
-                "id='" + id + '\'' +
-                ", startPoint='" + startPoint + '\'' +
-                ", endPoint='" + endPoint + '\'' +
-                ", departureTime='" + departureTime + '\'' +
-                ", price=" + price +
-                ", availableTicket=" + availableTicket +
-                '}';
+        return "\"id\":\"" + id + "\",\n" +
+                "\"startPoint\":\"" + startPoint + "\",\n" +
+                "\"endPoint\":\"" + endPoint + "\",\n" +
+                "\"departureTime\":\"" + departureTime + "\",\n" +
+                "\"price\":\"" + price + "\"\n";
     }
 }

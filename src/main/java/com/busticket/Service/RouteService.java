@@ -33,4 +33,8 @@ public class RouteService {
     public List<Route> getAll(){
         return routeRepository.findAll();
     }
+    public void addRoute(){
+        Route newRoute = new Route("Откуда-то", "Куда-то", "Когда-то", 1000, 10);
+        routeRepository.save(newRoute);
+    }
 }

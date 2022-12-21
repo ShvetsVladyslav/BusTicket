@@ -43,17 +43,20 @@ public class TicketService {
                 String requestBody = mapper.writeValueAsString(new Payer(fullName, routeService.getRoute(routeId).getPrice()));
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder().
-                        uri(URI.create("http://localhost:8080/payment/create"))
+                        uri(URI.create("http://localhost:8080/payment/create")).
+                        setHeader("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(requestBody)).build();
                 HttpResponse<String> apiCall = client.send(request,
                         HttpResponse.BodyHandlers.ofString());
-                PayCallback callback = mapper.convertValue(apiCall, PayCallback.class);
+                logger.info(apiCall.body());
+                PayCallback callback = mapper.readValue(apiCall.body(), PayCallback.class);
                 if (callback.isResponse()){
                     response = new Ticket(routeId, callback.getPayId());
                     ticketRepository.save(response);
                     routeService.ticketPurchase(routeId);
                 }
                 else {
+                    logger.error(callback.toString());
                     throw new ResponseStatusException(HttpStatus.CONFLICT, "Unsuccessful payment");
                 }
             }
@@ -74,7 +77,8 @@ public class TicketService {
             ObjectMapper mapper = new ObjectMapper();
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder().
-                    uri(URI.create("http://localhost:8080/payment/find?id=" + payId))
+                    uri(URI.create("http://localhost:8080/payment/find?id=" + payId)).
+                    setHeader("Content-Type", "application/json")
                     .GET().build();
             HttpResponse<String> apiCall = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.info(apiCall.body());

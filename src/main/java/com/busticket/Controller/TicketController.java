@@ -19,6 +19,10 @@ public class TicketController {
     RouteService routeService;
     @Autowired
     TicketService ticketService;
+    @PutMapping("/addRoute")
+    public void insertRoute(){
+        routeService.addRoute();
+    }
     @GetMapping("/getRoute")
     public List<Route> getAllRoute(){
         return routeService.getAll();

@@ -9,11 +9,8 @@ import lombok.Setter;
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PayCallback {
-    @JsonIgnore
     private boolean response;
-    @JsonIgnore
     private String description;
-    @JsonIgnore
     private String payId;
     @JsonProperty("state")
     private String state;
