@@ -13,9 +13,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-
 import java.net.URI;
-import java.net.http.*;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 @Service
 public class TicketService {
@@ -61,11 +62,10 @@ public class TicketService {
                 }
             }
             catch (IOException ioException){
-                throw new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT, "Get TIMEOUT from payment");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong I/O data");
             } catch (InterruptedException e) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Interrupted Exception");
             }
-
         }
         else {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "No tickets available");
@@ -94,7 +94,7 @@ public class TicketService {
         catch (InterruptedException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "InterruptedException");
         } catch (IOException e) {
-            throw new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT, "Get TIMEOUT from payment");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong I/O data");
         }
     }
 }
