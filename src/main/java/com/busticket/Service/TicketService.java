@@ -63,7 +63,7 @@ public class TicketService {
             catch (IOException ioException){
                 throw new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT, "Get TIMEOUT from payment");
             } catch (InterruptedException e) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Какая-то хуйня"); //TODO: поправить ошибку
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Interrupted Exception");
             }
 
         }
@@ -92,7 +92,7 @@ public class TicketService {
             }
         }
         catch (InterruptedException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Какая-то хуйня"); //TODO: поправить ошибку
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "InterruptedException");
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.GATEWAY_TIMEOUT, "Get TIMEOUT from payment");
         }
