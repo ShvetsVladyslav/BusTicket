@@ -27,7 +27,7 @@ public class TicketService {
     public int getAvailableTicket(String routeId){
         return routeService.getRoute(routeId).getAvailableTicket();
     }
-    private Ticket getTicket(String id){
+    public Ticket getTicket(String id){
         if (ticketRepository.findById(id).isPresent()){
             return ticketRepository.findById(id).get();
         }
@@ -76,11 +76,12 @@ public class TicketService {
             HttpRequest request = HttpRequest.newBuilder().
                     uri(URI.create("http://localhost:8080/payment/find?id=" + payId))
                     .GET().build();
-            HttpResponse<String> apiCall = client.send(request,
-                    HttpResponse.BodyHandlers.ofString());
-            logger.info(apiCall.toString());
-            PayCallback callback = mapper.convertValue(apiCall, PayCallback.class);
+            HttpResponse<String> apiCall = client.send(request, HttpResponse.BodyHandlers.ofString());
+            logger.info(apiCall.body());
+            PayCallback callback = mapper.readValue(apiCall.body(), PayCallback.class);
+            logger.info(callback.toString());
             if (callback.getState()!=null) {
+                logger.info(callback.getState());
                 return callback.getState();
             } else {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "State not found");

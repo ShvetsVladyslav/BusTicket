@@ -21,4 +21,16 @@ public class Route {
     private float price;
     @Field(name = "availableTicket")
     private int availableTicket;
+
+    @Override
+    public String toString() {
+        return "Route{" +
+                "id='" + id + '\'' +
+                ", startPoint='" + startPoint + '\'' +
+                ", endPoint='" + endPoint + '\'' +
+                ", departureTime='" + departureTime + '\'' +
+                ", price=" + price +
+                ", availableTicket=" + availableTicket +
+                '}';
+    }
 }
