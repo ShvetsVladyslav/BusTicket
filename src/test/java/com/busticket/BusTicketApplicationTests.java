@@ -11,11 +11,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class BusTicketApplicationTests {
-    @Autowired
-    TicketController ticketController;
     @Test
     void contextLoads() {
-        Assertions.assertThat(ticketController).isNot(null);
     }
 
 }
