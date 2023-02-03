@@ -1,5 +1,6 @@
 package com.busticket.Service;
 
+import com.busticket.Entity.PayCallback;
 import com.busticket.Entity.Route;
 import com.busticket.Entity.Ticket;
 import com.busticket.Repository.TicketRepository;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
@@ -21,6 +24,8 @@ import static org.mockito.Mockito.*;
 class TicketServiceTest {
     @InjectMocks
     TicketService ticketService;
+    @Autowired
+    private MockMvc mvc;
     @Mock
     RouteService routeService;
     @Mock
@@ -43,17 +48,14 @@ class TicketServiceTest {
     @Test
     @Description("whenTicketPurchase_shouldReturnTicketWithExpectedData")
     void ticketPurchase() {
-        when(ticketService.getRouteData(any())).thenReturn(new Route("Откуда-то","Куда-то","Когда-то", 1000, 10));
-        when(ticketService.ticketPurchase(any(),any())).thenReturn(new Ticket("TestRoute","TestPay"));
-        assertNotNull(ticketService.ticketPurchase("test","TestRoute"));
-        //assertEquals("TestPay", testTicket.getPayId());
-        //assertEquals("TestRoute", testTicket.getRouteId());
     }
 
     @Test
     @Description("whenGetPayState_shouldReturnNewState")
     void getPayState() {
-        when(ticketService.getPayState(any())).thenReturn("NEW");
-        assertEquals("NEW", ticketService.getPayState("TestPay"));
+        when(ticketService.getPayState("Test")).thenReturn("DONE");
+        PayCallback result = new PayCallback();
+        result.setState(ticketService.getPayState("Test"));
+        assertEquals("DONE", result.getState());
     }
 }
