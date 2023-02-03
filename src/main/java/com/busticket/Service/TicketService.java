@@ -2,6 +2,7 @@ package com.busticket.Service;
 
 import com.busticket.Entity.PayCallback;
 import com.busticket.Entity.Payer;
+import com.busticket.Entity.Route;
 import com.busticket.Entity.Ticket;
 import com.busticket.Repository.TicketRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,8 +26,8 @@ public class TicketService {
     private RouteService routeService;
     @Autowired
     private TicketRepository ticketRepository;
-    public int getAvailableTicket(String routeId){
-        return routeService.getRoute(routeId).getAvailableTicket();
+    public Route getRouteData(String routeId){
+        return routeService.getRoute(routeId);
     }
     public Ticket getTicket(String id){
         if (ticketRepository.findById(id).isPresent()){
@@ -38,10 +39,11 @@ public class TicketService {
     }
     public Ticket ticketPurchase(String fullName, String routeId){
         Ticket response;
-        if (getAvailableTicket(routeId)>0){
+        Route routeData = this.getRouteData(routeId);
+        if (routeData.getAvailableTicket()>0){
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                String requestBody = mapper.writeValueAsString(new Payer(fullName, routeService.getRoute(routeId).getPrice()));
+                String requestBody = mapper.writeValueAsString(new Payer(fullName, getRouteData(routeId).getPrice()));
                 HttpClient client = HttpClient.newHttpClient();
                 HttpRequest request = HttpRequest.newBuilder().
                         uri(URI.create("http://localhost:8080/payment/create")).
