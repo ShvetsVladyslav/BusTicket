@@ -2,6 +2,7 @@ package com.busticket.Service;
 
 import com.busticket.Entity.Route;
 import com.busticket.Repository.RouteRepository;
+import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +24,7 @@ class RouteServiceTest {
     @Mock
     RouteRepository repository;
     @Test
+    @Description("whenFindAll_shouldReturnListWithExpectedSize")
     void getRoute() {
         List<Route> list = new ArrayList<>();
         list.add(new Route("Откуда-то","Куда-то","Когда-то", 1000, 10));
@@ -34,6 +36,7 @@ class RouteServiceTest {
         assertEquals(4, result.size());
     }
     @Test
+    @Description("whenFindById_shouldntReturnStartAmountOfAvailableTicket")
     void ticketPurchase() {
         List<Route> list = new ArrayList<>();
         list.add(new Route("Откуда-то","Куда-то","Когда-то", 1000, 10));

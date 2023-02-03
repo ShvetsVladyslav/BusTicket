@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(SpringExtension.class)
@@ -28,7 +29,7 @@ class TicketControllerTest {
         Ticket ticket = new Ticket("63a2c5823590d06728c95749", "TestPayment");
         ticket.setId("TestTicketID");
 
-        given(ticketController.ticketPurchase(any(), any())).willReturn(ticket.getId());
+        when(ticketController.ticketPurchase(any(), any())).thenReturn(ticket.getId());
 
         MvcResult result = mvc.perform(post("/ticket/buyTicket")
                         .param("route","63a2c5823590d06728c95749")

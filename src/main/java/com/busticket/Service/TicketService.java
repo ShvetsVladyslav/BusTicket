@@ -39,8 +39,7 @@ public class TicketService {
     }
     public Ticket ticketPurchase(String fullName, String routeId){
         Ticket response;
-        Route routeData = this.getRouteData(routeId);
-        if (routeData.getAvailableTicket()>0){
+        if (getRouteData(routeId).getAvailableTicket()>0){
             try {
                 ObjectMapper mapper = new ObjectMapper();
                 String requestBody = mapper.writeValueAsString(new Payer(fullName, getRouteData(routeId).getPrice()));
